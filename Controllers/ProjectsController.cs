@@ -142,7 +142,7 @@ namespace BuffteksWebsite.Controllers
         }
 
         // GET: Projects/EditProjectParticipants/5
-        public async Task<IActionResult> EditProjectParticipants(string id)
+        public async Task<IActionResult> EditProjectParticipants(string id )
         {
             if (id == null)
             {
@@ -172,10 +172,25 @@ namespace BuffteksWebsite.Controllers
                 select participant;
               */               
 
+            var allClients = 
+                from participant in _context.Clients                       
+                select participant;
+            var clientsOnProject = 
+                from participant in _context.Clients
+                join projectparticipant in _context.ProjectRoster
+                on participant.ID equals projectparticipant.ProjectParticipantID
+                where project.ID == projectparticipant.ProjectID
+                select participant;
+
+            var allClientsInProject = allClients.ToList();            
+            var specificClientOnProjects = clientsOnProject.ToList();
+            var allClientsNotOnProject = allClientsInProject.Except(specificClientOnProjects).ToList();
+
+
 
             List<SelectListItem> clientsSelectList = new List<SelectListItem>();
 
-            foreach(var client in clients)
+            foreach(var client in allClientsNotOnProject)
             {
                 clientsSelectList.Add(new SelectListItem { Value=client.ID, Text = client.FirstName + " " + client.LastName});
             }
@@ -230,6 +245,7 @@ namespace BuffteksWebsite.Controllers
                 TheProject = project,
                 ProjectClientsList = clientsSelectList,
                 ProjectMembersList = membersSelectList
+                //MembersNotOnProject = allMembersNotOnProject
             };
             
 
@@ -239,7 +255,7 @@ namespace BuffteksWebsite.Controllers
         }   
          // POST: Projects/Delete/5
         [HttpPost, ActionName("EditProjectParticipants")]
-        [ValidateAntiForgeryToken]
+         [ValidateAntiForgeryToken]
         // public async Task<IActionResult> AddParticipant(string id)
         // {
             
@@ -248,14 +264,14 @@ namespace BuffteksWebsite.Controllers
         //     await _context.SaveChangesAsync();
         //     return RedirectToAction(nameof(Index));
         // }
-        //   public async Task<IActionResult> AddParticipant(string id)
-        // {
-        //     var list<SelectListItem> listofMembersToAdd = lis
-        //     var participant =  await _context.EditProjectDetailViewModel.SingleOrDefaultAsync(m => m.ProjectParticipantID == id); 
-        //     _context.EditProjectDetailViewModel.Add(participant);
-        //     await _context.SaveChangesAsync();
-        //     return RedirectToAction(nameof(Index));
-        // }
+          public async Task<IActionResult> AddParticipant(string id)
+        {
+            
+            var participant =  await _context.Members.SingleOrDefaultAsync(m => m.ID == id); 
+            _context.Members.Add(participant);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
         
         
 

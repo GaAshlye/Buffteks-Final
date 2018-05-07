@@ -20,6 +20,9 @@ namespace BuffteksWebsite.Models
         
         public List<SelectListItem> ProjectMembersList { get; set; }
 
-        public List<SelectListItem> membersSelectList {get; set;}
+        public List<SelectListItem> MembersNotOnProject {get; set;}
+        public string participant {get; set;}
+
+        //public List<SelectListItem> membersSelectList {get; set;}
     }
 }
