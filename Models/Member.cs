@@ -1,14 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace BuffteksWebsite.Models
 {
-    public class Member : ProjectParticipant
+    public class Member
     {
-        [Display(Name = "Major")]                
-        public string Major {get; set;}
+        public int MemberID{ get; set; }
+        public string FirstName{ get; set; }
+        public string LastName{ get; set; }
+        public string Standing{ get; set; }
+        public string Major{ get; set; }
+        public string Birthday{ get; set; }
+        public string Email{ get; set; }
+        public string Phone{ get; set; }
     }
 }

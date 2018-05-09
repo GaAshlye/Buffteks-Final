@@ -1,14 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace BuffteksWebsite.Models
 {
-    public class Client : ProjectParticipant
+    public class Client
     {
-        [Display(Name = "Company Name")]        
-        public string CompanyName {get; set;}
+        public int ClientID{ get; set; }
+        public string Company{get; set;}
+        public string CompanyContactFirstName{ get; set; }
+        public string CompanyContactLastName{ get; set; }     
+        public string Email{ get; set; }
+        public string Phone{ get; set; }
     }
 }

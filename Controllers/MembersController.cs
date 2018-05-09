@@ -21,19 +21,19 @@ namespace BuffteksWebsite.Controllers
         // GET: Members
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Members.ToListAsync());
+            return View(await _context.Member.ToListAsync());
         }
 
         // GET: Members/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var member = await _context.Members
-                .SingleOrDefaultAsync(m => m.ID == id);
+            var member = await _context.Member
+                .SingleOrDefaultAsync(m => m.MemberID == id);
             if (member == null)
             {
                 return NotFound();
@@ -53,7 +53,7 @@ namespace BuffteksWebsite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Major,ID,FirstName,LastName,Email,Phone")] Member member)
+        public async Task<IActionResult> Create([Bind("MemberID,FirstName,LastName,Standing,Major,Birthday,Email,Phone")] Member member)
         {
             if (ModelState.IsValid)
             {
@@ -65,14 +65,14 @@ namespace BuffteksWebsite.Controllers
         }
 
         // GET: Members/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var member = await _context.Members.SingleOrDefaultAsync(m => m.ID == id);
+            var member = await _context.Member.SingleOrDefaultAsync(m => m.MemberID == id);
             if (member == null)
             {
                 return NotFound();
@@ -85,9 +85,9 @@ namespace BuffteksWebsite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Major,ID,FirstName,LastName,Email,Phone")] Member member)
+        public async Task<IActionResult> Edit(int id, [Bind("MemberID,FirstName,LastName,Standing,Major,Birthday,Email,Phone")] Member member)
         {
-            if (id != member.ID)
+            if (id != member.MemberID)
             {
                 return NotFound();
             }
@@ -101,7 +101,7 @@ namespace BuffteksWebsite.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MemberExists(member.ID))
+                    if (!MemberExists(member.MemberID))
                     {
                         return NotFound();
                     }
@@ -116,15 +116,15 @@ namespace BuffteksWebsite.Controllers
         }
 
         // GET: Members/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var member = await _context.Members
-                .SingleOrDefaultAsync(m => m.ID == id);
+            var member = await _context.Member
+                .SingleOrDefaultAsync(m => m.MemberID == id);
             if (member == null)
             {
                 return NotFound();
@@ -136,17 +136,17 @@ namespace BuffteksWebsite.Controllers
         // POST: Members/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var member = await _context.Members.SingleOrDefaultAsync(m => m.ID == id);
-            _context.Members.Remove(member);
+            var member = await _context.Member.SingleOrDefaultAsync(m => m.MemberID == id);
+            _context.Member.Remove(member);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MemberExists(string id)
+        private bool MemberExists(int id)
         {
-            return _context.Members.Any(e => e.ID == id);
+            return _context.Member.Any(e => e.MemberID == id);
         }
     }
 }
